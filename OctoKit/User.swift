@@ -93,19 +93,19 @@ public extension Octokit {
 
     /**
         Fetches a user or organization
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter name: The name of the user or organization.
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func user(_ session: RequestKitURLSession = URLSession.shared, name: String, completion: @escaping (_ response: Response<User>) -> Void) -> URLSessionDataTaskProtocol? {
+    func user(_ session: RequestKitURLSession = URLSession.shared, name: String, completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = UserRouter.readUser(name, self.configuration)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: User.self) { user, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let user = user {
-                    completion(Response.success(user))
+                    completion(.success(user))
                 }
             }
         }
@@ -113,18 +113,18 @@ public extension Octokit {
 
     /**
         Fetches the authenticated user
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func me(_ session: RequestKitURLSession = URLSession.shared, completion: @escaping (_ response: Response<User>) -> Void) -> URLSessionDataTaskProtocol? {
+    func me(_ session: RequestKitURLSession = URLSession.shared, completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = UserRouter.readAuthenticatedUser(self.configuration)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: User.self) { user, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let user = user {
-                    completion(Response.success(user))
+                    completion(.success(user))
                 }
             }
         }

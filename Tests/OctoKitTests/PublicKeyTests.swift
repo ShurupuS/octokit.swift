@@ -15,7 +15,7 @@ class PublicKeyTests: XCTestCase {
             case .success(let publicKey):
                 XCTAssertEqual(publicKey, "test-key")
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)

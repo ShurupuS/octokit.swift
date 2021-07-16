@@ -28,7 +28,7 @@ class IssueTests: XCTestCase {
             case .success(let issue):
                 XCTAssertEqual(issue.number, 1347)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -42,7 +42,7 @@ class IssueTests: XCTestCase {
             case .success(let issue):
                 XCTAssertEqual(issue.number, 36)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -56,7 +56,7 @@ class IssueTests: XCTestCase {
             case .success(let comment):
                 XCTAssertEqual(comment.body, "Testing a comment")
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -72,7 +72,7 @@ class IssueTests: XCTestCase {
                 XCTAssertEqual(comments[0].body, "Testing fetching comments for an issue")
                 XCTAssertEqual(comments[0].reactions!.totalCount, 5)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)

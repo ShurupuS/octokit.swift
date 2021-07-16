@@ -10,7 +10,7 @@ class LabelTests: XCTestCase {
             case .success(let label):
                 XCTAssertEqual(label.name, "bug")
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -24,7 +24,7 @@ class LabelTests: XCTestCase {
             case .success:
                 XCTAssert(true)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -38,7 +38,7 @@ class LabelTests: XCTestCase {
             case .success(let labels):
                 XCTAssertEqual(labels.count, 7)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -52,7 +52,7 @@ class LabelTests: XCTestCase {
             case .success:
                 XCTAssert(true)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -66,7 +66,7 @@ class LabelTests: XCTestCase {
             case .success(let label):
                 XCTAssertNotNil(label)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)

@@ -45,44 +45,44 @@ public extension Octokit {
 
     /**
         Fetches the Repositories for a user or organization
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter owner: The user or organization that owns the repositories. If `nil`, fetches repositories for the authenticated user.
         - parameter page: Current page for repository pagination. `1` by default.
         - parameter perPage: Number of repositories per page. `100` by default.
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func repositories(_ session: RequestKitURLSession = URLSession.shared, owner: String? = nil, page: String = "1", perPage: String = "100", completion: @escaping (_ response: Response<[Repository]>) -> Void) -> URLSessionDataTaskProtocol? {
+    func repositories(_ session: RequestKitURLSession = URLSession.shared, owner: String? = nil, page: String = "1", perPage: String = "100", completion: @escaping (_ response: Result<[Repository], Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = (owner != nil)
             ? RepositoryRouter.readRepositories(configuration, owner!, page, perPage)
             : RepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [Repository].self) { repos, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             }
 
             if let repos = repos {
-                completion(Response.success(repos))
+                completion(.success(repos))
             }
         }
     }
 
     /**
         Fetches a repository for a user or organization
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter owner: The user or organization that owns the repositories.
         - parameter name: The name of the repository to fetch.
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func repository(_ session: RequestKitURLSession = URLSession.shared, owner: String, name: String, completion: @escaping (_ response: Response<Repository>) -> Void) -> URLSessionDataTaskProtocol? {
+    func repository(_ session: RequestKitURLSession = URLSession.shared, owner: String, name: String, completion: @escaping (_ response: Result<Repository, Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = RepositoryRouter.readRepository(configuration, owner, name)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: Repository.self) { repo, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let repo = repo {
-                    completion(Response.success(repo))
+                    completion(.success(repo))
                 }
             }
         }

@@ -8,19 +8,19 @@ public extension Octokit {
 
     /**
         Fetches all the starred repositories for a user
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter name: The user who starred repositories.
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func stars(_ session: RequestKitURLSession = URLSession.shared, name: String, completion: @escaping (_ response: Response<[Repository]>) -> Void) -> URLSessionDataTaskProtocol? {
+    func stars(_ session: RequestKitURLSession = URLSession.shared, name: String, completion: @escaping (_ response: Result<[Repository], Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = StarsRouter.readStars(name, configuration)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [Repository].self) { repos, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let repos = repos {
-                    completion(Response.success(repos))
+                    completion(.success(repos))
                 }
             }
         }
@@ -28,18 +28,18 @@ public extension Octokit {
 
     /**
         Fetches all the starred repositories for the authenticated user
-        - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+        - parameter session: RequestKitURLSession, defaults to URLSession.shared
         - parameter completion: Callback for the outcome of the fetch.
     */
     @discardableResult
-    func myStars(_ session: RequestKitURLSession = URLSession.shared, completion: @escaping (_ response: Response<[Repository]>) -> Void) -> URLSessionDataTaskProtocol? {
+    func myStars(_ session: RequestKitURLSession = URLSession.shared, completion: @escaping (_ response: Result<[Repository], Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = StarsRouter.readAuthenticatedStars(configuration)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [Repository].self) { repos, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let repos = repos {
-                    completion(Response.success(repos))
+                    completion(.success(repos))
                 }
             }
         }

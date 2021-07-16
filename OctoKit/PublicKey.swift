@@ -7,14 +7,14 @@ import FoundationNetworking
 // MARK: request
 
 public extension Octokit {
-    func postPublicKey(_ session: RequestKitURLSession = URLSession.shared, publicKey: String, title: String, completion: @escaping (_ response: Response<String>) -> Void) -> URLSessionDataTaskProtocol? {
+    func postPublicKey(_ session: RequestKitURLSession = URLSession.shared, publicKey: String, title: String, completion: @escaping (_ response: Result<String, Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = PublicKeyRouter.postPublicKey(publicKey, title, configuration)
         return router.postJSON(session, expectedResultType: [String: AnyObject].self) { json, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let _ = json {
-                    completion(Response.success(publicKey))
+                    completion(.success(publicKey))
                 }
             }
         }

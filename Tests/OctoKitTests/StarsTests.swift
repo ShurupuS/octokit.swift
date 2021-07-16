@@ -14,7 +14,7 @@ class StarsTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -29,7 +29,7 @@ class StarsTests: XCTestCase {
         let task = Octokit(config).myStars(session) { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve repositories")
+                XCTFail("should not retrieve repositories")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 404)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)
@@ -46,7 +46,7 @@ class StarsTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -58,7 +58,7 @@ class StarsTests: XCTestCase {
         let task = Octokit().stars(session, name: "octocat") { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve repositories")
+                XCTFail("should not retrieve repositories")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 404)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)

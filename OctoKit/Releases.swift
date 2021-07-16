@@ -56,14 +56,14 @@ public extension Octokit {
     ///   - repository: The name of the repository.
     ///   - completion: Callback for the outcome of the fetch.
     @discardableResult
-    func listReleases(_ session: RequestKitURLSession = URLSession.shared, owner: String, repository: String, completion: @escaping (_ response: Response<[Release]>) -> Void) -> URLSessionDataTaskProtocol? {
+    func listReleases(_ session: RequestKitURLSession = URLSession.shared, owner: String, repository: String, completion: @escaping (_ response: Result<[Release], Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = ReleaseRouter.listReleases(configuration, owner, repository)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [Release].self) { releases, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let releases = releases {
-                    completion(Response.success(releases))
+                    completion(.success(releases))
                 }
             }
         }
@@ -82,17 +82,17 @@ public extension Octokit {
     ///   - draft: `true` to identify the release as a prerelease. `false` to identify the release as a full release. Default: `false`.
     ///   - completion: Callback for the outcome of the created release.
     @discardableResult
-    func postRelease(_ session: RequestKitURLSession = URLSession.shared, owner: String, repository: String, tagName: String, targetCommitish: String? = nil, name: String? = nil, body: String? = nil, prerelease: Bool = false, draft: Bool = false, completion: @escaping (_ response: Response<Release>) -> Void) -> URLSessionDataTaskProtocol? {
+    func postRelease(_ session: RequestKitURLSession = URLSession.shared, owner: String, repository: String, tagName: String, targetCommitish: String? = nil, name: String? = nil, body: String? = nil, prerelease: Bool = false, draft: Bool = false, completion: @escaping (_ response: Result<Release, Error>) -> Void) -> URLSessionDataTaskProtocol? {
         let router = ReleaseRouter.postRelease(configuration, owner, repository, tagName, targetCommitish, name, body, prerelease, draft)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Time.rfc3339DateFormatter)
 
         return router.post(session, decoder: decoder, expectedResultType: Release.self) { issue, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let issue = issue {
-                    completion(Response.success(issue))
+                    completion(.success(issue))
                 }
             }
         }

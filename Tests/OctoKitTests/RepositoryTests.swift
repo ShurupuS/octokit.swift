@@ -11,7 +11,7 @@ class RepositoryTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -26,7 +26,7 @@ class RepositoryTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -43,7 +43,7 @@ class RepositoryTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -60,7 +60,7 @@ class RepositoryTests: XCTestCase {
             case .success(let repositories):
                 XCTAssertEqual(repositories.count, 1)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -76,7 +76,7 @@ class RepositoryTests: XCTestCase {
         let task = Octokit(config).repositories(session) { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve repositories")
+                XCTFail("should not retrieve repositories")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 401)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)
@@ -95,7 +95,7 @@ class RepositoryTests: XCTestCase {
                 XCTAssertEqual(repo.name, name)
                 XCTAssertEqual(repo.owner.login, owner)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -112,7 +112,7 @@ class RepositoryTests: XCTestCase {
                 XCTAssertEqual(repo.name, name)
                 XCTAssertEqual(repo.owner.login, owner)
             case .failure:
-                XCTAssert(false, "should not get an error")
+                XCTFail("should not get an error")
             }
         }
         XCTAssertNotNil(task)
@@ -125,7 +125,7 @@ class RepositoryTests: XCTestCase {
         let task = Octokit().repository(session, owner: owner, name: name) { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve repositories")
+                XCTFail("should not retrieve repositories")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 404)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)

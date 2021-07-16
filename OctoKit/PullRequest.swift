@@ -86,7 +86,7 @@ public extension Octokit {
 
     /**
     Get a single pull request
-    - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+    - parameter session: RequestKitURLSession, defaults to URLSession.shared
     - parameter owner: The user or organization that owns the repositories.
     - parameter repository: The name of the repository.
     - parameter number: The number of the PR to fetch.
@@ -97,15 +97,15 @@ public extension Octokit {
                             owner: String,
                             repository: String,
                             number: Int,
-                            completion: @escaping (_ response: Response<PullRequest>) -> Void) -> URLSessionDataTaskProtocol? {
+                            completion: @escaping (_ response: Result<PullRequest, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let router = PullRequestRouter.readPullRequest(configuration, owner, repository, "\(number)")
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: PullRequest.self) { pullRequest, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let pullRequest = pullRequest {
-                    completion(Response.success(pullRequest))
+                    completion(.success(pullRequest))
                 }
             }
         }
@@ -113,7 +113,7 @@ public extension Octokit {
 
     /**
     Get a list of pull requests
-    - parameter session: RequestKitURLSession, defaults to NSURLSession.sharedSession()
+    - parameter session: RequestKitURLSession, defaults to URLSession.shared
     - parameter owner: The user or organization that owns the repositories.
     - parameter repository: The name of the repository.
     - parameter base: Filter pulls by base branch name.
@@ -131,15 +131,15 @@ public extension Octokit {
                              state: Openness = .open,
                              sort: SortType = .created,
                              direction: SortDirection = .desc,
-                             completion: @escaping (_ response: Response<[PullRequest]>) -> Void) -> URLSessionDataTaskProtocol? {
+                             completion: @escaping (_ response: Result<[PullRequest], Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let router = PullRequestRouter.readPullRequests(configuration, owner, repository, base, head, state, sort, direction)
         return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [PullRequest].self) { pullRequests, error in
             if let error = error {
-                completion(Response.failure(error))
+                completion(.failure(error))
             } else {
                 if let pullRequests = pullRequests {
-                    completion(Response.success(pullRequests))
+                    completion(.success(pullRequests))
                 }
             }
         }

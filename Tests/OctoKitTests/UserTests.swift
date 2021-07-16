@@ -13,7 +13,7 @@ class UserTests: XCTestCase {
                 XCTAssertEqual(user.login, username)
                 XCTAssertNotNil(user.createdAt)
             case .failure:
-                XCTAssert(false, "should get a user")
+                XCTFail("should get a user")
             }
         }
         XCTAssertNotNil(task)
@@ -26,7 +26,7 @@ class UserTests: XCTestCase {
         let task = Octokit().user(session, name: username) { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve user")
+                XCTFail("should not retrieve user")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 404)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)
@@ -46,7 +46,7 @@ class UserTests: XCTestCase {
             case .success(let user):
                 XCTAssertEqual(user.login, "pietbrauer")
             case .failure(let error):
-                XCTAssert(false, "should not retrieve an error \(error)")
+                XCTFail("should not retrieve an error \(error)")
             }
         }
         XCTAssertNotNil(task)
@@ -59,7 +59,7 @@ class UserTests: XCTestCase {
         let task = Octokit().me(session) { response in
             switch response {
             case .success:
-                XCTAssert(false, "should not retrieve user")
+                XCTFail("should not retrieve user")
             case .failure(let error as NSError):
                 XCTAssertEqual(error.code, 401)
                 XCTAssertEqual(error.domain, OctoKitErrorDomain)

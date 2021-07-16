@@ -69,5 +69,31 @@ class OctoKitURLTestSession: RequestKitURLSession {
         wasCalled = true
         return MockURLSessionDataTask()
     }
+    
+    func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
+        XCTAssertEqual(request.url?.absoluteString, expectedURL)
+        XCTAssertEqual(request.httpMethod, expectedHTTPMethod)
+        
+        for (key,value) in expectedHTTPHeaders {
+            XCTAssertEqual(request.allHTTPHeaderFields?[key], value)
+        }
+        
+        let response = HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: "http/1.1", headerFields: ["Content-Type": "application/json"])
+        wasCalled = true
+        return (responseString?.data(using: String.Encoding.utf8) ?? Data(), response!)
+    }
+    
+    func upload(for request: URLRequest, from data: Data, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
+        XCTAssertEqual(request.url?.absoluteString, expectedURL)
+        XCTAssertEqual(request.httpMethod, expectedHTTPMethod)
+        
+        for (key,value) in expectedHTTPHeaders {
+            XCTAssertEqual(request.allHTTPHeaderFields?[key], value)
+        }
+        
+        let response = HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: "http/1.1", headerFields: ["Content-Type": "application/json"])
+        wasCalled = true
+        return (responseString?.data(using: String.Encoding.utf8) ?? Data(), response!)
+    }
 }
 

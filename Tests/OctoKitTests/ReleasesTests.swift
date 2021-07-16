@@ -45,7 +45,7 @@ final class ReleasesTests: XCTestCase {
                     XCTFail("Failed to unwrap `releases.last`")
                 }
             case let .failure(error):
-                XCTAssert(false, "Endpoint failed with error \(error)")
+                XCTFail("Endpoint failed with error \(error)")
             }
         }
         XCTAssertNotNil(task)
@@ -64,7 +64,7 @@ final class ReleasesTests: XCTestCase {
                 XCTAssertFalse(release.prerelease)
                 XCTAssertFalse(release.draft)
             case .failure(let error):
-                XCTAssert(false, "Endpoint failed with error \(error)")
+                XCTFail("Endpoint failed with error \(error)")
             }
         }
         XCTAssertNotNil(task)
